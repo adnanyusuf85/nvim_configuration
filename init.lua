@@ -12,9 +12,12 @@ vim.opt.shiftwidth = 4       -- Size of an indent
 vim.opt.expandtab = true     -- Use spaces instead of tabs
 vim.opt.laststatus = 2  -- 3 activates a single global bar across all screen splits
 
+vim.keymap.set('n', 'gl', vim.diagnostic.open_float, { desc = 'Open diagnostic float' })
+
 local map = vim.api.nvim_set_keymap
 local opts = { noremap = true, silent = true }
 
+vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]], { desc = 'Exit terminal mode' })
 
 -- Go to next tab, or jump to specific tab if a count is given (e.g., 3gt)
 vim.keymap.set('n', 'gt', function()
@@ -61,6 +64,27 @@ vim.api.nvim_create_autocmd("SessionLoadPost", {
   end,
 })
 
+-- LSP
+-- 1. Setup Mason as normal to handle installations
+require("mason").setup()
+require("mason-lspconfig").setup({
+  ensure_installed = { "lua_ls", "pyright" }, 
+})
 
+-- 2. Define the servers you want to run
+local servers = { "lua_ls", "pyright" }
 
+-- 3. Initialize and enable them using the new native API
+for _, server in ipairs(servers) do
+  -- vim.lsp.config automatically merges default configurations from nvim-lspconfig
+  -- You can pass overrides inside the second argument table {} if needed
+  vim.lsp.config(server, {})
+  
+  -- Explicitly turn on the server configuration
+  vim.lsp.enable(server)
+end
+
+-- END LSP
+
+-- End Mason LSP
 vim.cmd("colorscheme tokyonight")
