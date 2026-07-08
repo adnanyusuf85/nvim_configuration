@@ -12,6 +12,10 @@ vim.opt.shiftwidth = 4       -- Size of an indent
 vim.opt.expandtab = true     -- Use spaces instead of tabs
 vim.opt.laststatus = 2  -- 3 activates a single global bar across all screen splits
 
+-- vim.o.guitablabel = "%t"
+-- vim.o.showtabline = 2
+-- vim.o.autochdir = true
+
 vim.keymap.set('n', 'gl', vim.diagnostic.open_float, { desc = 'Open diagnostic float' })
 
 local map = vim.api.nvim_set_keymap
@@ -23,9 +27,9 @@ vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]], { desc = 'Exit terminal mode' })
 vim.keymap.set('n', 'gt', function()
   local count = vim.v.count
   if count > 0 then
-    vim.cmd('BufferGoto ' .. count)
+    vim.cmd('BufferLineGoToBuffer ' .. count)
   else
-    vim.cmd('BufferNext')
+    vim.cmd('BufferLineCycleNext')
   end
 end, { noremap = true, silent = true, desc = 'Next tab or Go to tab [count]' })
 
@@ -35,10 +39,10 @@ vim.keymap.set('n', 'gT', function()
   if count > 0 then
     -- Loops BufferPrevious 'count' times
     for _ = 1, count do
-      vim.cmd('BufferPrevious')
+      vim.cmd('BufferLineCyclePrev')
     end
   else
-    vim.cmd('BufferPrevious')
+    vim.cmd('BufferLineCyclePrev')
   end
 end, { noremap = true, silent = true, desc = 'Previous tab' })
 
@@ -87,4 +91,4 @@ end
 -- END LSP
 
 -- End Mason LSP
-vim.cmd("colorscheme tokyonight")
+vim.cmd("colorscheme neofusion")

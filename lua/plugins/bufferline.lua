@@ -1,10 +1,10 @@
-return {
-	'akinsho/bufferline.nvim', 
+return { 'akinsho/bufferline.nvim', 
 	version = "*", 
 	dependencies = 'nvim-tree/nvim-web-devicons',
-	event = "VeryLazy",
-	config = function()
-		require("bufferline").setup({})
+	-- event = "VeryLazy",
+    lazy = false,
+	config = function(_, opts)
+		require("bufferline").setup({options = opts.options})
 	end,
 	-- The config will automatically trigger require("bufferline").setup(opts)
 	opts = {
@@ -15,7 +15,7 @@ return {
 			show_duplicate_prefix = false, 
 			-- Safely format the name to strictly return the file's basename
 			name_formatter = function(buf)
-				return buf.name
+				return vim.fn.fnamemodify(buf.name, ':t')
 			end,
 		}
 	}
